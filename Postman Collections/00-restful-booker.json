@@ -1,0 +1,332 @@
+{
+  "info": {
+    "_postman_id": "6404e64e-fee6-4e1f-8130-b552a8e67596",
+    "name": "00-restful-booker",
+    "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "_postman_id": "2cc1949b-7a50-4657-a7c6-e9d15cdccd63",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"username\" : \"admin\",\n    \"password\" : \"password123\"\n}",
+          "options": {
+            "raw": {}
+          }
+        },
+        "url": "https://restful-booker.herokuapp.com/auth"
+      },
+      "response": []
+    },
+    {
+      "name": "getBookingIds",
+      "_postman_id": "99af2f28-74d4-41d0-9a2f-ecda6d1f6082",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "https://restful-booker.herokuapp.com/booking"
+      },
+      "response": []
+    },
+    {
+      "name": "getBookingOnId",
+      "_postman_id": "fd17eaa0-4a70-4ad0-b789-525e3ddb54e1",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "https://restful-booker.herokuapp.com/booking/3",
+        "description": "get booking based on id"
+      },
+      "response": []
+    },
+    {
+      "name": "getBookingIdOnName",
+      "_postman_id": "4f542cf1-8d01-4c42-babd-44029b646b37",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://restful-booker.herokuapp.com/booking?firstname=Mark&lastname=Brown",
+          "protocol": "https",
+          "host": [
+            "restful-booker",
+            "herokuapp",
+            "com"
+          ],
+          "path": [
+            "booking"
+          ],
+          "query": [
+            {
+              "key": "firstname",
+              "value": "Mark"
+            },
+            {
+              "key": "lastname",
+              "value": "Brown"
+            }
+          ]
+        },
+        "description": "Note: The values keep changing so instead of an array with single json element (booking id) you might see an empty array"
+      },
+      "response": []
+    },
+    {
+      "name": "getBookingIdOnCheckinDate",
+      "_postman_id": "44d571eb-1714-4427-96fb-39496128e8b1",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://restful-booker.herokuapp.com/booking?checkin=2019-09-09",
+          "protocol": "https",
+          "host": [
+            "restful-booker",
+            "herokuapp",
+            "com"
+          ],
+          "path": [
+            "booking"
+          ],
+          "query": [
+            {
+              "key": "checkin",
+              "value": "2019-09-09"
+            }
+          ]
+        },
+        "description": "returns booking ids with checkin dates greater than or equal to the checkin date set in query param"
+      },
+      "response": []
+    },
+    {
+      "name": "getBookingIdOnCheckoutDate",
+      "_postman_id": "073324e1-19a3-43ef-9ee2-da76db4da9f6",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://restful-booker.herokuapp.com/booking?checkout=2019-09-09",
+          "protocol": "https",
+          "host": [
+            "restful-booker",
+            "herokuapp",
+            "com"
+          ],
+          "path": [
+            "booking"
+          ],
+          "query": [
+            {
+              "key": "checkout",
+              "value": "2019-09-09"
+            }
+          ]
+        },
+        "description": "returns booking ids with checkout dates greater than or equal to checkout dates set in query param"
+      },
+      "response": []
+    },
+    {
+      "name": "getBookingIdOnBothDates",
+      "_postman_id": "25f7b090-33b3-4b39-b0e3-4c030df61c49",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://restful-booker.herokuapp.com/booking?checkin=2020-09-04&checkout=2020-10-29",
+          "protocol": "https",
+          "host": [
+            "restful-booker",
+            "herokuapp",
+            "com"
+          ],
+          "path": [
+            "booking"
+          ],
+          "query": [
+            {
+              "key": "checkin",
+              "value": "2020-09-04"
+            },
+            {
+              "key": "checkout",
+              "value": "2020-10-29"
+            }
+          ]
+        },
+        "description": "I got no results even though I specifically chose checkin and out dates based on /booking/1. Idk if this is dynamically changing data or a bug"
+      },
+      "response": []
+    },
+    {
+      "name": "createBooking",
+      "_postman_id": "183cba5d-8900-4b71-bdb3-42040f2c40f6",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Cookie",
+            "value": "token=c6608343fbc3367",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"firstname\" : \"Jane\",\r\n    \"lastname\" : \"Terry\",\r\n    \"totalprice\" : 111,\r\n    \"depositpaid\" : true,\r\n    \"bookingdates\" : {\r\n        \"checkin\" : \"2018-01-01\",\r\n        \"checkout\" : \"2019-01-01\"\r\n    },\r\n    \"additonalneeds\" : \"Breakfast\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "https://restful-booker.herokuapp.com/booking"
+      },
+      "response": []
+    },
+    {
+      "name": "updateBooking (put)",
+      "_postman_id": "9545f916-e7cf-4e88-b214-a8e19f79d66a",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Cookie",
+            "value": "token=e61dc9cb9ca0f78",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"firstname\" : \"Jane\",\r\n    \"lastname\" : \"Terry\",\r\n    \"totalprice\" : 111,\r\n    \"depositpaid\" : true,\r\n    \"bookingdates\" : {\r\n        \"checkin\" : \"2018-01-01\",\r\n        \"checkout\" : \"2019-01-06\"\r\n    },\r\n    \"additionalneeds\" : \"Breakfast\"\r\n}\r\n",
+          "options": {
+            "raw": {}
+          }
+        },
+        "url": "https://restful-booker.herokuapp.com/booking/11"
+      },
+      "response": []
+    },
+    {
+      "name": "partaillyUpdateBooking (patch)",
+      "_postman_id": "878c5662-58f3-49a1-bc05-be910b8f4473",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Cookie",
+            "value": "token=e61dc9cb9ca0f78",
+            "type": "text"
+          },
+          {
+            "key": "Authorisation",
+            "value": "Basic YWRtaW46cGFzc3dvcmQxMjM=",
+            "type": "text",
+            "disabled": true
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"firstname\" : \"Erica\",\r\n    \"lastname\" : \"Jones\"\r\n}",
+          "options": {
+            "raw": {}
+          }
+        },
+        "url": "https://restful-booker.herokuapp.com/booking/3"
+      },
+      "response": []
+    },
+    {
+      "name": "deletedBooking",
+      "_postman_id": "bfa5ebde-2229-4ab0-85cd-a93ab613ed2e",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Cookie",
+            "value": "token=401d23ded757682",
+            "type": "text"
+          },
+          {
+            "key": "Authorisation",
+            "value": " Basic YWRtaW46cGFzc3dvcmQxMjM=",
+            "type": "text",
+            "disabled": true
+          }
+        ],
+        "url": "https://restful-booker.herokuapp.com/booking/6"
+      },
+      "response": []
+    },
+    {
+      "name": "Ping test",
+      "_postman_id": "3e2ad96c-94b3-462d-99ee-ff4d7f072c59",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "https://{{rb_url}}/ping"
+      },
+      "response": []
+    }
+  ]
+}
