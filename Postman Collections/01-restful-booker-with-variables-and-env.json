@@ -1,0 +1,365 @@
+{
+  "info": {
+    "_postman_id": "2bee2485-dc0e-456b-b4da-7ae9902302b2",
+    "name": "01-restful-booker-with-variables-and-env",
+    "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Ping test",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "9e266453-69bf-45f6-82ad-e05002448801",
+            "exec": [
+              "pm.test(\"response code is 200\", function (){\r",
+              "    pm.response.to.have.status(200);\r",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "_postman_id": "1f73db9b-742a-4930-a0d9-11e4524fb569",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{rb_url}}/ping"
+      },
+      "response": []
+    },
+    {
+      "name": "Auth",
+      "_postman_id": "17da5fcf-3bcf-40bc-8d3e-ee4f0dbfba4f",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"username\" : \"admin\",\n    \"password\" : \"password123\"\n}",
+          "options": {
+            "raw": {}
+          }
+        },
+        "url": "{{rb_url}}/auth"
+      },
+      "response": []
+    },
+    {
+      "name": "getBookingIds",
+      "_postman_id": "9fb96e4a-6cb8-489a-8e7a-62b33af0ab17",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{rb_url}}/booking"
+      },
+      "response": []
+    },
+    {
+      "name": "getBookingOnId",
+      "_postman_id": "5fb7da84-41d9-42dd-a72c-1b75d4811412",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{rb_url}}/booking/3",
+        "description": "get booking based on id"
+      },
+      "response": []
+    },
+    {
+      "name": "getBookingIdOnName",
+      "_postman_id": "72290a16-05c9-469d-9927-c4fa151c7375",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{rb_url}}/booking?firstname=Mark&lastname=Brown",
+          "host": [
+            "{{rb_url}}"
+          ],
+          "path": [
+            "booking"
+          ],
+          "query": [
+            {
+              "key": "firstname",
+              "value": "Mark"
+            },
+            {
+              "key": "lastname",
+              "value": "Brown"
+            }
+          ]
+        },
+        "description": "Note: The values keep changing so instead of an array with single json element (booking id) you might see an empty array"
+      },
+      "response": []
+    },
+    {
+      "name": "getBookingIdOnCheckinDate",
+      "_postman_id": "1c96920d-5aa8-4363-a734-210a4bf5c9a8",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{rb_url}}/booking?checkin=2019-09-09",
+          "host": [
+            "{{rb_url}}"
+          ],
+          "path": [
+            "booking"
+          ],
+          "query": [
+            {
+              "key": "checkin",
+              "value": "2019-09-09"
+            }
+          ]
+        },
+        "description": "returns booking ids with checkin dates greater than or equal to the checkin date set in query param"
+      },
+      "response": []
+    },
+    {
+      "name": "getBookingIdOnCheckoutDate",
+      "_postman_id": "f4984a95-3ad6-4cc5-b0ca-a62de59fbf5b",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{rb_url}}/booking?checkout=2019-09-09",
+          "host": [
+            "{{rb_url}}"
+          ],
+          "path": [
+            "booking"
+          ],
+          "query": [
+            {
+              "key": "checkout",
+              "value": "2019-09-09"
+            }
+          ]
+        },
+        "description": "returns booking ids with checkout dates greater than or equal to checkout dates set in query param"
+      },
+      "response": []
+    },
+    {
+      "name": "getBookingIdOnBothDates",
+      "_postman_id": "dbd80757-bd32-41ff-9f47-9bba95ee3b26",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{rb_url}}/booking?checkin=2020-09-04&checkout=2020-10-29",
+          "host": [
+            "{{rb_url}}"
+          ],
+          "path": [
+            "booking"
+          ],
+          "query": [
+            {
+              "key": "checkin",
+              "value": "2020-09-04"
+            },
+            {
+              "key": "checkout",
+              "value": "2020-10-29"
+            }
+          ]
+        },
+        "description": "I got no results even though I specifically chose checkin and out dates based on /booking/1. Idk if this is dynamically changing data or a bug"
+      },
+      "response": []
+    },
+    {
+      "name": "createBooking",
+      "_postman_id": "a340e4b2-1ac4-4fb5-afa0-348f7e8a14ad",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Cookie",
+            "value": "token=c6608343fbc3367",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"firstname\" : \"Jane\",\r\n    \"lastname\" : \"Terry\",\r\n    \"totalprice\" : 111,\r\n    \"depositpaid\" : true,\r\n    \"bookingdates\" : {\r\n        \"checkin\" : \"2018-01-01\",\r\n        \"checkout\" : \"2019-01-01\"\r\n    },\r\n    \"additonalneeds\" : \"Breakfast\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{rb_url}}/booking"
+      },
+      "response": []
+    },
+    {
+      "name": "updateBooking (put)",
+      "_postman_id": "042ee757-c83d-4c23-842f-ee0ca77c0786",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Cookie",
+            "value": "token=8470c03a734809a",
+            "type": "text",
+            "disabled": true
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"firstname\": \"Marx\",\r\n    \"lastname\": \"Brown\",\r\n    \"totalprice\": 383,\r\n    \"depositpaid\": false,\r\n    \"bookingdates\": {\r\n        \"checkin\": \"2019-05-24\",\r\n        \"checkout\": \"2019-08-16\"\r\n    },\r\n    \"additionalneeds\": \"Breakfast\"\r\n}\r\n",
+          "options": {
+            "raw": {}
+          }
+        },
+        "url": "{{rb_url}}/booking/3"
+      },
+      "response": []
+    },
+    {
+      "name": "partaillyUpdateBooking (patch)",
+      "_postman_id": "f3f9e9ba-ce1e-4d2e-91ed-3dd09640548c",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Cookie",
+            "value": "token=8470c03a734809a",
+            "type": "text",
+            "disabled": true
+          },
+          {
+            "warning": "This is a duplicate header and will be overridden by the Authorization header generated by Postman.",
+            "key": "Authorization",
+            "value": "Basic YWRtaW46cGFzc3dvcmQxMjM=",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"firstname\" : \"Erica\",\r\n    \"lastname\" : \"Jones\"\r\n}",
+          "options": {
+            "raw": {}
+          }
+        },
+        "url": "{{rb_url}}/booking/3"
+      },
+      "response": []
+    },
+    {
+      "name": "deleteBooking",
+      "_postman_id": "953aa980-c9db-49ca-89b0-0a9641dcd2fc",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Cookie",
+            "value": "token=8470c03a734809a",
+            "type": "text",
+            "disabled": true
+          },
+          {
+            "key": "Authorization",
+            "value": " Basic YWRtaW46cGFzc3dvcmQxMjM=",
+            "type": "text"
+          }
+        ],
+        "url": "{{rb_url}}/booking/7"
+      },
+      "response": []
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": {
+      "password": "{{auth_password}}",
+      "username": "{{auth_username}}"
+    }
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "id": "5f9be9b8-e811-4f29-8859-49539bb526ea",
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "id": "434bfb99-9c07-4c1c-b1f9-d8680f80af15",
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ]
+}
