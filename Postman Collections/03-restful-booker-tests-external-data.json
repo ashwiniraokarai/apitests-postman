@@ -1,0 +1,104 @@
+{
+  "info": {
+    "_postman_id": "599f0d5b-7d95-41ff-9d56-40f5886a1412",
+    "name": "03-restful-booker-tests-external-data",
+    "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "createBooking",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "6d910154-add1-41aa-9446-37cc17d61bd0",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "//See data (muliple values) defined for firstname in csv\r",
+              "var firstname = pm.variables.get(\"firstname\");\r",
+              "console.log(firstname);\r",
+              "\r",
+              "pm.test(\"validate first name:\" + firstname, function () {\r",
+              "    var jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.booking.firstname).to.eql(firstname);\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "_postman_id": "09458be3-5d9d-497f-a34f-ee95cbf43ceb",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Cookie",
+            "value": "token=c6608343fbc3367",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"firstname\" : \"{{firstname}}\",\r\n    \"lastname\" : \"Jesus\",\r\n    \"totalprice\" : 111,\r\n    \"depositpaid\" : true,\r\n    \"bookingdates\" : {\r\n        \"checkin\" : \"2018-01-01\",\r\n        \"checkout\" : \"2019-01-01\"\r\n    },\r\n    \"additionalneeds\" : \"Breakfast\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{rb_url}}/booking",
+          "host": [
+            "{{rb_url}}"
+          ],
+          "path": [
+            "booking"
+          ],
+          "query": [
+            {
+              "key": "",
+              "value": null,
+              "type": "text",
+              "disabled": true
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "id": "cfd7a7f5-e768-4900-a7c4-66128607ef7d",
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "id": "fd79184d-01cf-4677-92b2-09afcebc8ae6",
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ]
+}
