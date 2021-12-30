@@ -1,0 +1,237 @@
+{
+  "info": {
+    "_postman_id": "62c98cbb-68a3-450c-a8f7-c679d9391137",
+    "name": "04-restful-booker-tests-with-prerequest",
+    "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "deleteBooking",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "9d291dc7-2252-44a3-9e4a-b4b2331f1634",
+            "exec": [
+              "//CREATE a booking under the hood to test this DELETE bookig request against\r",
+              "\r",
+              "//Gather data for creating a booking\r",
+              "payload = {\r",
+              "    \"firstname\" : \"Jim\",\r",
+              "    \"lastname\" : \"Brown\",\r",
+              "    \"totalprice\" : 111,\r",
+              "    \"depositpaid\" : true,\r",
+              "    \"bookingdates\" : {\r",
+              "        \"checkin\" : \"2021-06-18\",\r",
+              "        \"checkout\" : \"2021-06-21\"\r",
+              "    },\r",
+              "    \"additionalneeds\" : \"Breakfast\"\r",
+              "}\r",
+              "\r",
+              "//Put together the request that consumes the payload\r",
+              "const createBookingRequest = {\r",
+              "    url: 'https://restful-booker.herokuapp.com/booking',\r",
+              "    method: 'POST',\r",
+              "    header: {\r",
+              "        'Content-Type': 'application/json',\r",
+              "    },\r",
+              "\r",
+              "    body: {\r",
+              "        mode: 'raw',\r",
+              "        raw: JSON.stringify(payload)\r",
+              "    }\r",
+              "};\r",
+              "\r",
+              "\r",
+              "//Make the actual request and grab the booking id from response body to use in the DELETE request\r",
+              "pm.sendRequest(createBookingRequest, (error, response) => {\r",
+              "    pm.expect(error).is.null;\r",
+              "    console.log(error ? error : response.json);\r",
+              "    pm.variables.set(\"newBookingId\", response.json().bookingid);\r",
+              "});\r",
+              "\r",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "_postman_id": "645ac796-e9c6-422a-8885-5684bdc84ad5",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {}
+          }
+        },
+        "url": "{{rb_url}}/booking/{{newBookingId}}"
+      },
+      "response": []
+    },
+    {
+      "name": "deleteBookingFancyRequestData",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "40b2400d-fcf6-4ba1-b21f-0543ab15f0ea",
+            "exec": [
+              "//CREATE a booking under the hood to test this DELETE bookig request against\r",
+              "\r",
+              "//Create choices for your booking data (data set) to choose input from. That way each booking you create will likely have varying data. Think of this as your own version of FAKER that can generate randomized but qualifying data\r",
+              "var firstNames = [\"Emily\",\"Michael\", \"Jessica\",\"Matthew\", \"Ashley\", \"Jacob\",\"Sarah\", \"Christopher\",\"Samantha\",\"Joshua\",\"Taylor\",\"Nicholas\",\"Hannah\",\"Tyler\",\"Alexis\",\r",
+              "\t\"Brandon\",\"Rachel\",\"Austin\",\"Elizabeth\",\"Andrew\"];\r",
+              "//Pick a random value from the array you want to read from and set it to postman variable\r",
+              "pm.variables.set(\"firstName\", firstNames[_.random(firstNames.length - 1)]);\r",
+              "\r",
+              "var lastNames = [\"Smith\", \"Johnson\", \"Williams\", \"Brown\", \"Jones\", \"Garcia\", \"Miller\", \"Davis\", \"Rodriguez\", \"Martinez\", \"Hernandez\", \"Lopez\", \"Gonzales\", \"Wilson\", \"Anderson\", \"Thomas\", \"Taylor\", \"Moore\", \"Jackson\", \"Martin\", \"Lee\"];\r",
+              "pm.variables.set(\"lastName\", lastNames[_.random(lastNames.length - 1)]);\r",
+              "\r",
+              "pm.variables.set(\"totalPrice\", _.random(50, 250));\r",
+              "//_.random(1) returns 0 or 1. When deep compared with 1 evaluates to true or false\r",
+              "pm.variables.set(\"depositPaid\", _.random(1) === 1); \r",
+              "\r",
+              "//moment module helps with easy date manipulation \r",
+              "const moment = require(\"moment\");\r",
+              "//Add specified number of days from now- e.g.: moment().add(1, 'days') or .add('days', 1)\r",
+              "var checkinDate = moment().add('days', _.random(1, 180));\r",
+              "pm.variables.set(\"checkinDate\", checkinDate.format(\"YYYY-MM-DD\"));\r",
+              "\r",
+              "var checkoutDate = checkinDate.add(_.random(10), 'days');\r",
+              "pm.variables.set(\"checkoutDate\", checkoutDate.format(\"YYYY-MM-DD\"));\r",
+              "\r",
+              "var additionalNeeds = [\"breakfast\", \"lunch\", \"early checkin\", \"late checkout\", null];\r",
+              "pm.variables.set(\"additionalNeed\", additionalNeeds[_.random(additionalNeeds.length-1)]);\r",
+              "\r",
+              "//Gather data for creating a booking. Inputs leverage the randomized data you arranged for above\r",
+              "payload = {\r",
+              "    \"firstname\" : pm.variables.get(\"firstName\"),\r",
+              "    \"lastname\" : pm.variables.get(\"lastName\"),\r",
+              "    \"totalprice\" : pm.variables.get(\"totalPrice\"),\r",
+              "    \"depositpaid\" : pm.variables.get(\"depositPaid\"),\r",
+              "    \"bookingdates\" : {\r",
+              "        \"checkin\" : pm.variables.get(\"checkinDate\"),\r",
+              "        \"checkout\" : pm.variables.get(\"checkoutDate\")\r",
+              "    },\r",
+              "    \"additionalneeds\" : pm.variables.get(\"additionalNeed\")\r",
+              "}\r",
+              "\r",
+              "//Put together the request that consumes the payload\r",
+              "const createBookingRequest = {\r",
+              "    url: 'https://restful-booker.herokuapp.com/booking',\r",
+              "    method: 'POST',\r",
+              "    header: {\r",
+              "        'Content-Type': 'application/json',\r",
+              "    },\r",
+              "\r",
+              "    body: {\r",
+              "        mode: 'raw',\r",
+              "        raw: JSON.stringify(payload)\r",
+              "    }\r",
+              "};\r",
+              "\r",
+              "\r",
+              "//Make the actual request and grab the booking id from response body to use in the DELETE request (pro tip: this gives you the dual advantage of using the booking id in ANY test across your collection)\r",
+              "pm.sendRequest(createBookingRequest, (error, response) => {\r",
+              "    pm.expect(error).is.null;\r",
+              "    console.log(error ? error : response.json);\r",
+              "    pm.variables.set(\"newBookingId\", response.json().bookingid);\r",
+              "});\r",
+              "\r",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "id": "405f2673-c21c-4002-8df4-35b44435416b",
+            "exec": [
+              "//Creating a resource (201) isn't an ideal response for a request that deletes resources.\r",
+              "//This is great feedback to the developer, but for now I am focusing on the assertion itself \r",
+              "pm.test(\"Returns a response code of 201\", function () {\r",
+              "    pm.response.to.have.status(201);\r",
+              "});\r",
+              "\r",
+              "//Test that a request to GET the deleted booking id produces appropriate response code (not found - 404)\r",
+              "pm.test(\"Cannot access the deleted booking\", function () {\r",
+              "    //send get request\r",
+              "    pm.sendRequest(pm.variables.get(\"rb_url\")+\"/booking/\"+pm.variables.get(\"newBookingId\"), (error, res) => {\r",
+              "        pm.expect(error).is.null;\r",
+              "        pm.expect(res.code).to.eql(404);\r",
+              "    });\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "_postman_id": "9e7f40ce-2c3c-401e-a23d-004aab43a0e2",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {}
+          }
+        },
+        "url": "{{rb_url}}/booking/{{newBookingId}}"
+      },
+      "response": []
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": {
+      "password": "{{auth_password}}",
+      "username": "{{auth_username}}"
+    }
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "id": "0ac09399-1dbf-4702-b677-3ed531c02f18",
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "id": "9436ca8e-302f-4ce7-8c1c-835d065067eb",
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ]
+}
